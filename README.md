@@ -1,3 +1,3 @@
-# ClobberBot
+# VibeBot
 
-Big Time Gamer
+It's a vibe.

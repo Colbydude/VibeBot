@@ -1,7 +1,7 @@
 {
-    "name": "clobber-bot",
+    "name": "vibe-bot",
     "version": "1.0.0",
-    "description": "Big Time Gamer",
+    "description": "It's a vibe.",
     "main": "bot.js",
     "engines": {
         "node": "12.x",
@@ -11,13 +11,13 @@
         "start": "node bot.js",
         "start:dotenv": "node -r dotenv/config bot.js"
     },
-    "repository": "git@github.com:Colbydude/ClobberBot.git",
+    "repository": "git@github.com:Colbydude/VibeBot.git",
     "author": "Colby Terry",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/Colbydude/ClobberBot/issues"
+        "url": "https://github.com/Colbydude/VibeBot/issues"
     },
-    "homepage": "https://github.com/Colbydude/ClobberBot/issues",
+    "homepage": "https://github.com/Colbydude/VibeBot/issues",
     "dependencies": {
         "discord.js": "^12.0",
         "dotenv": "^8.2.0",

@@ -1,8 +1,5 @@
-const fs = require('fs');
 const Discord = require('discord.js');
 const logger = require('winston');
-
-const prefix = '!';
 
 // Configure logger settings.
 logger.remove(logger.transports.Console);
@@ -11,53 +8,54 @@ logger.level = 'debug';
 
 // Initialize the bot.
 const bot = new Discord.Client();
-bot.commands = new Discord.Collection();
-
-// Load in command handlers.
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-    bot.commands.set(command.name, command);
-}
 
 // Initialization.
-bot.once('ready', () => {
+bot.once('ready', async () => {
     logger.info('Logged in as ' + bot.user.tag + '!');
-    logger.info(`Loaded ${bot.commands.size} command handlers.`);
+    await bot.user.setPresence({
+        activity: { type: 'LISTENING', name: `some vibes. (0)` },
+        status: 'idle'
+    });
 });
 
 // Listen for messages.
-bot.on('message', message => {
-    if (!message.content.startsWith(prefix) || message.author.bot || message.channel.type !== 'text') {
-        return;
+bot.on('message', async (message) => {
+    const msg = message.content.toLowerCase();
+
+    // Count how many vibes.
+    let vibeCount = 0;
+
+    vibeCount += (msg.match(/vibe/g) || []).length;
+    vibeCount += (msg.match(/vibin/g) || []).length;
+    vibeCount += (msg.match(/v i b e/g) || []).length;
+    vibeCount += (msg.match(/v i b i n/g) || []).length;
+
+    console.log(`${vibeCount} vibes detected.`);
+
+    if (vibeCount > 0) {
+        const currentVibes = getVibesFromPresence(bot.user.presence);
+
+        await bot.user.setPresence({
+            activity: { type: 'LISTENING', name: `some vibes. (${currentVibes + vibeCount})` },
+            status: 'idle'
+        });
     }
+});
 
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const commandName = args.shift().toLowerCase();
-    const command = bot.commands.get(commandName);
-
-    if (!command) {
-        return;
-    }
-
-    if (command.args && !args.length) {
-        let reply = `You didn't provide any arguments, ${message.author}!`;
-
-        if (command.usage) {
-            reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\`.`;
-        }
-
-        return message.channel.send(reply);
+function getVibesFromPresence(presence) {
+    if (presence.activities.length === 0) {
+        return 0;
     }
 
     try {
-        command.execute(logger, message, args);
-    } catch (error) {
-        logger.error(error);
-        message.channel.send(`There was an error trying to execute the ${commandName} command!`);
+        // Extract vibe count from the number inbetween parentheses.
+        return parseInt(/\(([^)]+)\)/.exec(presence.activities[0].name)[1]);
     }
-});
+    catch (e) {
+        console.error('Could not determine vibes. :( ', e);
+        return 0;
+    }
+}
 
 // Connect the bot.
 bot.login(process.env.DISCORD_TOKEN);
