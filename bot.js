@@ -30,7 +30,7 @@ bot.on('message', async (message) => {
     vibeCount += (msg.match(/v i b e/g) || []).length;
     vibeCount += (msg.match(/v i b i n/g) || []).length;
 
-    console.log(`${vibeCount} vibes detected.`);
+    logger.info(`${vibeCount} vibes detected.`);
 
     if (vibeCount > 0) {
         const currentVibes = getVibesFromPresence(bot.user.presence);
@@ -52,7 +52,7 @@ function getVibesFromPresence(presence) {
         return parseInt(/\(([^)]+)\)/.exec(presence.activities[0].name)[1]);
     }
     catch (e) {
-        console.error('Could not determine vibes. :( ', e);
+        logger.error('Could not determine vibes. :(', e);
         return 0;
     }
 }
