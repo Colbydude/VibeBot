@@ -12,8 +12,12 @@ const bot = new Discord.Client();
 // Initialization.
 bot.once('ready', async () => {
     logger.info('Logged in as ' + bot.user.tag + '!');
+
+    // Attempt to get the count from the status if it goes offline.
+    const initialVibes = getVibesFromPresence(bot.user.presence);
+
     await bot.user.setPresence({
-        activity: { type: 'LISTENING', name: `some vibes. (0)` },
+        activity: { type: 'LISTENING', name: `some vibes. (${initialVibes})` },
         status: 'idle'
     });
 });
