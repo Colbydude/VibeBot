@@ -1,5 +1,8 @@
 const Discord = require('discord.js');
+const fs = require('fs');
 const logger = require('winston');
+
+const cacheFileName = './vibes.txt';
 
 // Configure logger settings.
 logger.remove(logger.transports.Console);
@@ -13,8 +16,12 @@ const bot = new Discord.Client();
 bot.once('ready', async () => {
     logger.info('Logged in as ' + bot.user.tag + '!');
 
-    // Attempt to get the count from the status if it goes offline.
-    const initialVibes = getVibesFromPresence(bot.user.presence);
+    // Attempt to get the count from the cache file if the bot goes offline.
+    let initialVibes = 0;
+
+    if (fs.existsSync(cacheFileName)) {
+        initialVibes = parseInt(fs.readFileSync(cacheFileName));
+    }
 
     await bot.user.setPresence({
         activity: { type: 'LISTENING', name: `some vibes. (${initialVibes})` },
@@ -38,11 +45,15 @@ bot.on('message', async (message) => {
 
     if (vibeCount > 0) {
         const currentVibes = getVibesFromPresence(bot.user.presence);
+        const newVibes = currentVibes + vibeCount;
 
         await bot.user.setPresence({
-            activity: { type: 'LISTENING', name: `some vibes. (${currentVibes + vibeCount})` },
+            activity: { type: 'LISTENING', name: `some vibes. (${newVibes})` },
             status: 'idle'
         });
+
+        // Cache to file.
+        fs.writeFileSync(cacheFileName, newVibes);
     }
 });
 

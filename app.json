@@ -1,7 +1,0 @@
-{
-    "name": "VibeBot",
-    "description": "It's a vibe.",
-    "repository": "https://github.com/Colbydude/VibeBot",
-    "logo": "https://cdn.jsdelivr.net/gh/heroku/node-js-getting-started/public/node.svg",
-    "image": "heroku/nodejs"
-}
