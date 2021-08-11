@@ -3,10 +3,6 @@
     "version": "1.0.0",
     "description": "It's a vibe.",
     "main": "bot.js",
-    "engines": {
-        "node": "12.x",
-        "npm": "*"
-    },
     "scripts": {
         "start": "node bot.js",
         "start:dotenv": "node -r dotenv/config bot.js"
