@@ -4,8 +4,7 @@
     "description": "It's a vibe.",
     "main": "bot.js",
     "scripts": {
-        "start": "node bot.js",
-        "start:dotenv": "node -r dotenv/config bot.js"
+        "start": "node bot.js"
     },
     "repository": "git@github.com:Colbydude/VibeBot.git",
     "author": "Colby Terry",
