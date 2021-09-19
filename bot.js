@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const logger = require('winston');
 
-const cacheFileName = './vibes.txt';
+const cacheFileName = __dirname + '/vibes.txt';
 
 // Configure logger settings.
 logger.remove(logger.transports.Console);
@@ -55,7 +55,7 @@ bot.on('message', async (message) => {
         });
 
         // Cache to file.
-        fs.writeFileSync(cacheFileName, newVibes);
+        fs.writeFileSync(cacheFileName, "" + newVibes);
     }
 });
 
